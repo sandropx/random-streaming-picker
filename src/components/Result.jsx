@@ -156,6 +156,9 @@ function Results() {
             <Card key={result.id} result={result} onSeen={handleSeen} />
           ))
         )}
+        <button className="refresh-btn" onClick={fetchResults}>
+          New Picks
+        </button>
       </div>
     </>
   );
