@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router";
 import { useNavigate, useLocation } from "react-router";
-import { Analytics } from "@vercel/analytics/next";
+//import { Analytics } from "@vercel/analytics/next";       <Analytics />
 
 import Platforms from "./components/Platforms";
 import Category from "./components/Category";
@@ -18,7 +18,6 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/results" element={<Results />} />
       </Routes>
-      <Analytics />
     </>
   );
 }
