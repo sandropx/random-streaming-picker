@@ -1,8 +1,8 @@
 import { useFilters } from "../context/FilterContext";
 import { useState, useEffect } from "react";
-import { useSwipeable } from "react-swipeable";
 import { useNavigate } from "react-router";
 
+import CasinoIcon from "@mui/icons-material/Casino";
 import Swal from "sweetalert2";
 import Nav from "./Nav";
 import Card from "./Card";
@@ -86,15 +86,6 @@ function Results() {
     }
   }
 
-  const handlers = useSwipeable({
-    onSwipedDown: (eventData) => {
-      if (window.scrollY === 0 && eventData.deltaY > 80) {
-        fetchResults();
-      }
-    },
-    preventScrollOnSwipe: true,
-  });
-
   async function handleSeen(id) {
     const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
 
@@ -142,7 +133,7 @@ function Results() {
 
   return (
     <>
-      <div {...handlers} className="content-result">
+      <div className="content-result">
         {loading ? (
           <>
             <div className="loading">
@@ -157,7 +148,7 @@ function Results() {
           ))
         )}
         <button className="refresh-btn" onClick={fetchResults}>
-          New Picks
+          <CasinoIcon />
         </button>
       </div>
     </>
