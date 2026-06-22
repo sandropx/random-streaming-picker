@@ -10,11 +10,6 @@
     "tmdb_id": 10759
   },
   {
-    "id": 30,
-    "name": "Adult",
-    "tmdb_id": 0
-  },
-  {
     "id": 2,
     "name": "Adventure",
     "tmdb_id": 12
@@ -27,11 +22,6 @@
   {
     "id": 33,
     "name": "Anime",
-    "tmdb_id": 0
-  },
-  {
-    "id": 31,
-    "name": "Biography",
     "tmdb_id": 0
   },
   {
@@ -95,11 +85,6 @@
     "tmdb_id": 10402
   },
   {
-    "id": 32,
-    "name": "Musical",
-    "tmdb_id": 0
-  },
-  {
     "id": 13,
     "name": "Mystery",
     "tmdb_id": 9648
@@ -108,11 +93,6 @@
     "id": 36,
     "name": "Nature",
     "tmdb_id": 0
-  },
-  {
-    "id": 22,
-    "name": "News",
-    "tmdb_id": 10763
   },
   {
     "id": 23,
