@@ -7,7 +7,6 @@ import Category from "./pages/Category";
 import Preference from "./pages/Preference";
 import Search from "./pages/Search";
 import Results from "./pages/Result";
-
 function App() {
   return (
     <>
