@@ -1,4 +1,4 @@
-import UseNavigation from "../hooks/UseNavigation.jsx";
+import UseNavigation from "../hooks/UseNavigation";
 
 function Nav() {
   const { goNext, goPrev, isFirst, isLast } = UseNavigation();

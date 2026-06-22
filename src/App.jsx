@@ -2,11 +2,11 @@ import { Routes, Route } from "react-router";
 import { useNavigate, useLocation } from "react-router";
 //import { Analytics } from "@vercel/analytics/next";       <Analytics />
 
-import Platforms from "./pages/Platforms.jsx";
-import Category from "./pages/Category.jsx";
-import Preference from "./pages/Preference.jsx";
-import Search from "./pages/Search.jsx";
-import Results from "./pages/Results.jsx";
+import Platforms from "./pages/Platforms";
+import Category from "./pages/Category";
+import Preference from "./pages/Preference";
+import Search from "./pages/Search";
+import Results from "./pages/Results";
 function App() {
   return (
     <>
