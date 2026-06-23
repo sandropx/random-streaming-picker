@@ -80,6 +80,10 @@ h4 {
   padding: 40px;
 }
 
+.content-result {
+  min-height: 100dvh;
+}
+
 .search-page {
   display: flex;
   justify-content: center;
@@ -219,6 +223,95 @@ input[type="checkbox"]:checked {
 .search-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+.empty-state {
+  min-height: 100dvh;
+  display: flex;
+  align-content: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 25px;
+  text-align: center;
+}
+
+.empty-state h3 {
+  color: white;
+  line-height: 1.4;
+  font-size: 1.8rem;
+}
+
+.empty-state p {
+  max-width: 600px;
+  color: #8d93a5;
+  line-height: 1.7;
+  font-size: 0.9rem;
+}
+
+.empty-icon {
+  opacity: 0.7;
+  margin-bottom: 20px;
+}
+
+.button-history {
+  display: flex;
+  margin-top: 30px;
+  gap: 20px;
+}
+
+.resetHistory-button {
+  width: 150px;
+  height: 50px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+  font-family: "Google Sans Flex", sans-serif;
+  font-size: 1.2rem;
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: 0.25s ease;
+}
+
+.resetHistory-button:hover {
+  transform: translateY(-2px);
+  background-color: var(--accent-color-darker);
+  cursor: pointer;
+  box-shadow:
+    0 15px 30px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(1, 255, 229, 0.15);
+  border-color: rgba(1, 255, 229, 0.25);
+}
+
+.changeFilter-button {
+  width: 150px;
+  height: 50px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: var(--accent-color-darker);
+  color: white;
+  font-family: "Google Sans Flex", sans-serif;
+  font-size: 1.2rem;
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: 0.25s ease;
+}
+
+.changeFilter-button:hover {
+  transform: translateY(-2px);
+  background-color: var(--accent-color-darker);
+  cursor: pointer;
+  box-shadow:
+    0 15px 30px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(1, 255, 229, 0.15);
+  border-color: rgba(1, 255, 229, 0.25);
 }
 
 /* ============================================================
@@ -397,6 +490,7 @@ input[type="checkbox"]:checked {
 }
 
 .refresh-btn {
+  z-index: 10;
   position: fixed;
   bottom: 25px;
   right: 25px;
@@ -490,22 +584,6 @@ input[type="checkbox"]:checked {
     0 10px 25px rgba(0, 0, 0, 0.25),
     inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
   transition: 0.25s ease !important;
-}
-
-/* ============================================================
-   RESULT EMPTY
-   ============================================================ */
-.empty-state {
-  text-align: center;
-  padding: 4rem 2rem;
-}
-
-.empty-state h2 {
-  margin-bottom: 1rem;
-}
-
-.empty-state p {
-  opacity: 0.7;
 }
 
 /* ============================================================

@@ -4,7 +4,7 @@ function useResults(filters, navigate) {
   const apiKey = import.meta.env.VITE_WATCHMODE_API_KEY;
 
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [emptyReason, setEmptyReason] = useState(null);
   const [totalTitles, setTotalTitles] = useState(0);
 
@@ -21,8 +21,6 @@ function useResults(filters, navigate) {
       `&regions=CH`
     );
   }
-  console.log(buildUrl());
-
   async function fetchResults() {
     setLoading(true);
     setEmptyReason(null);
@@ -71,10 +69,6 @@ function useResults(filters, navigate) {
         .sort(() => Math.random() - 0.5)
         .slice(0, 3);
 
-      console.log("API:", data.titles.length);
-      console.log("SEEN:", seenTitles.length);
-      console.log("RANDOM:", randomResults.length);
-
       if (randomResults.length === 0) {
         setEmptyReason("history");
         setResults([]);
@@ -106,12 +100,28 @@ function useResults(filters, navigate) {
 
     const replacementMovie = await getReplacementMovie();
 
+    if (!replacementMovie) {
+      setResults((prev) => {
+        const newResults = prev.filter((movie) => movie.id !== id);
+
+        if (newResults.length === 0) {
+          setEmptyReason("history");
+        }
+
+        return newResults;
+      });
+
+      return;
+    }
+
     setResults((prev) =>
       prev.map((movie) => (movie.id === id ? replacementMovie : movie)),
     );
   }
 
   async function getReplacementMovie() {
+    const currentIds = results.map((movie) => movie.id);
+
     const response = await fetch(buildUrl());
 
     const data = await response.json();
@@ -119,13 +129,12 @@ function useResults(filters, navigate) {
     const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
 
     const availableTitles = data.titles.filter(
-      (movie) => !seenTitles.includes(movie.id),
+      (movie) =>
+        !seenTitles.includes(movie.id) && !currentIds.includes(movie.id),
     );
 
     if (availableTitles.length === 0) {
-      setEmptyReason("history");
-      setResults([]);
-      return;
+      return null;
     }
 
     const randomMovie =
@@ -137,12 +146,19 @@ function useResults(filters, navigate) {
 
     return await detailsResponse.json();
   }
-  console.log("EMPTY REASON:", emptyReason);
+
+  const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
+  const logSeen = seenTitles.length;
+  const logFoundAll = totalTitles;
+
+  const allMinusSeen = logFoundAll - logSeen;
+
   return {
     results,
     loading,
     emptyReason,
     totalTitles,
+    allMinusSeen,
     fetchResults,
     handleSeen,
   };
