@@ -3,8 +3,10 @@ import { useNavigate } from "react-router";
 
 import { useFilters } from "../context/FilterContext";
 import useResults from "../hooks/useResults";
+import Swal from "sweetalert2";
 
 import ShuffleIcon from "@mui/icons-material/Shuffle";
+import WarningAmberSharpIcon from "@mui/icons-material/WarningAmberSharp";
 
 import Card from "../components/Card";
 import Loading from "../components/Loading";
@@ -19,9 +21,12 @@ function Results() {
     emptyReason,
     totalTitles,
     allMinusSeen,
+    apiRemaining,
     fetchResults,
     handleSeen,
   } = useResults(filters, navigate);
+
+  console.log("API remaining:", apiRemaining);
 
   useEffect(() => {
     fetchResults();
@@ -50,7 +55,6 @@ function Results() {
           <div className="text-center pb-5">
             <i>{allMinusSeen} titles found</i>
           </div>
-
           <button className="refresh-btn" onClick={fetchResults}>
             <ShuffleIcon fontSize="large" />
           </button>

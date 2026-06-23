@@ -7,6 +7,7 @@ function useResults(filters, navigate) {
   const [loading, setLoading] = useState(true);
   const [emptyReason, setEmptyReason] = useState(null);
   const [totalTitles, setTotalTitles] = useState(0);
+  const [apiRemaining, setApiRemaining] = useState(null);
 
   function buildUrl() {
     const sourceIds = filters.platforms.join(",");
@@ -21,7 +22,27 @@ function useResults(filters, navigate) {
       `&regions=CH`
     );
   }
+
   async function fetchResults() {
+    const remaining = Number(localStorage.getItem("watchmodeRemaining"));
+
+    if (remaining && remaining <= 25) {
+      await Swal.fire({
+        title: "API limit reached",
+        text: "The service has reached its monthly quota. Please contact developer.",
+        confirmButtonText: "Go back",
+        icon: "error",
+        customClass: {
+          container: "my-alert-container",
+          popup: "my-alert",
+          title: "my-alert-title",
+          confirmButton: "my-alert-btn",
+        },
+      });
+      navigate("/");
+      return;
+    }
+
     setLoading(true);
     setEmptyReason(null);
     const hasPlatforms = filters.platforms.length > 0;
@@ -51,6 +72,12 @@ function useResults(filters, navigate) {
 
     try {
       const response = await fetch(buildUrl());
+
+      const quota = Number(response.headers.get("X-Account-Quota"));
+      const used = Number(response.headers.get("X-Account-Quota-Used"));
+      const remaining = quota - used;
+      setApiRemaining(remaining);
+      localStorage.setItem("watchmodeRemaining", remaining);
 
       const data = await response.json();
 
@@ -159,6 +186,7 @@ function useResults(filters, navigate) {
     emptyReason,
     totalTitles,
     allMinusSeen,
+    apiRemaining,
     fetchResults,
     handleSeen,
   };
