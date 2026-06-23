@@ -9,7 +9,7 @@ function EmptyState({ type, onReset, onBack }) {
         <h3>No titles found</h3>
         <p>No movies or series match your current filters.</p>
         <div className="button-history">
-          <button className="resetHistory-button" onClick={onBack}>
+          <button className="changeFilter-button" onClick={onBack}>
             Modify filters
           </button>
         </div>
