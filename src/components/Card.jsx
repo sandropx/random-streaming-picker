@@ -1,10 +1,29 @@
 import { useFilters } from "../context/FilterContext";
+import { useRef, useEffect, useState } from "react";
 
 import StarIcon from "@mui/icons-material/Star";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 function Card({ result, onSeen }) {
   const { filters } = useFilters();
+  const titleRef = useRef(null);
+  const [synopsisClamp, setSynopsisClamp] = useState(4);
+
+  useEffect(() => {
+    if (!titleRef.current) return;
+
+    const lineHeight = parseInt(getComputedStyle(titleRef.current).lineHeight);
+    const titleLines = Math.round(titleRef.current.scrollHeight / lineHeight);
+
+    const clampMap = {
+      1: 8,
+      2: 6,
+      3: 4,
+      4: 2,
+    };
+
+    setSynopsisClamp(clampMap[titleLines]);
+  }, [result.title]);
 
   const typeLabels = {
     movie: "Movie",
@@ -55,7 +74,6 @@ function Card({ result, onSeen }) {
     .map((id) => result.sources?.find((source) => source.source_id === id))
     .find(Boolean);
 
-  console.log(result.sources);
   return (
     <>
       <div className="card">
@@ -73,14 +91,24 @@ function Card({ result, onSeen }) {
           <div className="header-card">
             <div>
               <span className="meta">{infos.join(" • ")}</span>
-              <h3>{result.title}</h3>
+              <h3 ref={titleRef}>{result.title}</h3>
             </div>
             <div className="rating">
               <StarIcon /> {result.user_rating}
             </div>
           </div>
           <hr />
-          <p className="plot-overview">{result.plot_overview}</p>
+          <p
+            className="plot-overview"
+            style={{
+              display: "-webkit-box",
+              WebkitLineClamp: synopsisClamp,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
+          >
+            {result.plot_overview}
+          </p>
           <div className="tags">
             <span className="genres">{displayGenres.join(" • ")}</span>
             <span className="platform">{matchingSource?.name}</span>

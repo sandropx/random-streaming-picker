@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, EffectCards, Scrollbar } from "swiper/modules";
 
 import { useFilters } from "../context/FilterContext";
 import useResults from "../hooks/useResults";
@@ -11,6 +13,10 @@ import WarningAmberSharpIcon from "@mui/icons-material/WarningAmberSharp";
 import Card from "../components/Card";
 import Loading from "../components/Loading";
 import EmptyState from "../components/EmptyState";
+
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
 
 function Results() {
   const { filters } = useFilters();
@@ -46,15 +52,36 @@ function Results() {
           }}
         />
       ) : (
-        results.map((result) => (
-          <Card key={result.id} result={result} onSeen={handleSeen} />
-        ))
+        <Swiper
+          modules={[Pagination, EffectCards, Scrollbar]}
+          pagination={{
+            clickable: true, // cliquer sur un bullet pour naviguer
+            type: "bullets", // "bullets" | "fraction" | "progressbar"
+            dynamicBullets: true, // les bullets s'agrandissent au centre
+          }}
+          scrollbar={{ draggable: false }}
+          effect="cards"
+          speed={400}
+          cardsEffect={{
+            slideShadows: false,
+            rotate: 0,
+            perSlideOffset: 10,
+            perSlideRotate: 0,
+          }}
+        >
+          {results.map((result) => (
+            <SwiperSlide key={result.id}>
+              <Card result={result} onSeen={handleSeen} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       )}
       {!loading && !emptyReason && (
         <>
-          <div className="text-center pb-5">
+          {/*<div className="text-center pb-5">
             <i>{allMinusSeen} titles found</i>
-          </div>
+          </div>*/}
+
           <button className="refresh-btn" onClick={fetchResults}>
             <ShuffleIcon fontSize="large" />
           </button>
