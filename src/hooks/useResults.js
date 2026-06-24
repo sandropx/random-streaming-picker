@@ -13,8 +13,7 @@ function useResults(filters, navigate) {
     const types = filters.preferences.join(",");
 
     return (
-      `/api/watchmode` +
-      `&source_ids=${sourceIds}` +
+      `/api/watchmode?source_ids=${sourceIds}` +
       `&genres=${genres}` +
       `&types=${types}` +
       `&regions=CH`
