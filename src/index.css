@@ -396,7 +396,7 @@ input[type="checkbox"]:checked {
   background-color: var(--bg-color);
   color: var(--font-color);
   border-radius: 15px;
-  margin: 30px;
+  margin: 20px;
   height: 90dvh;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
@@ -662,6 +662,7 @@ input[type="checkbox"]:checked {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
+    line-clamp: 4;
     overflow: hidden;
   }
 }
