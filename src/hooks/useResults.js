@@ -21,7 +21,7 @@ function useResults(filters, navigate) {
     );
   }
 
-  async function fetchResults() {
+  /*async function fetchResults() {
     const remaining = Number(localStorage.getItem("watchmodeRemaining"));
 
     if (remaining && remaining <= 25) {
@@ -39,7 +39,7 @@ function useResults(filters, navigate) {
       });
       navigate("/");
       return;
-    }
+    }*/
 
     setLoading(true);
     setEmptyReason(null);
