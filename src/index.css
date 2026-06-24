@@ -485,7 +485,9 @@ input[type="checkbox"]:checked {
   flex-direction: column;
   gap: 10px;
 }
-
+.header-card h3 {
+  font-size: 1.6rem;
+}
 .meta {
   color: #7a7f92;
   font-size: 0.8rem;

@@ -6,27 +6,28 @@ export default async function handler(req, res) {
     regions = "CH",
   } = req.query;
 
-  const url =
-    `https://api.watchmode.com/v1/list-titles/?apiKey=${process.env.WATCHMODE_API_KEY}` +
-    `&source_ids=${source_ids}` +
-    `&genres=${genres}` +
-    `&types=${types}` +
-    `&regions=${regions}`;
+  const params = new URLSearchParams();
+
+  params.append("apiKey", process.env.WATCHMODE_API_KEY);
+
+  if (source_ids) params.append("source_ids", source_ids);
+  if (genres) params.append("genres", genres);
+  if (types) params.append("types", types);
+  if (regions) params.append("regions", regions);
+
+  const url = `https://api.watchmode.com/v1/list-titles/?${params.toString()}`;
+
+  console.log("KEY:", process.env.WATCHMODE_API_KEY?.slice(0, 6));
+  console.log(
+    "WATCHMODE URL:",
+    url.replace(process.env.WATCHMODE_API_KEY, "***"),
+  );
 
   try {
     const response = await fetch(url);
-
-    const quota = Number(response.headers.get("X-Account-Quota"));
-    const used = Number(response.headers.get("X-Account-Quota-Used"));
-    const remaining = quota - used;
-
-    res.setHeader("X-Account-Quota", quota);
-    res.setHeader("X-Account-Quota-Used", used);
-    res.setHeader("X-Account-Quota-Remaining", remaining);
-
     const data = await response.json();
 
-    res.status(200).json(data);
+    res.status(response.status).json(data);
   } catch (error) {
     res.status(500).json({ error: "Watchmode request failed" });
   }
