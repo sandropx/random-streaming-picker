@@ -30,6 +30,7 @@ function Results() {
     apiRemaining,
     fetchResults,
     handleSeen,
+    shuffleFromPool,
   } = useResults(filters, navigate);
 
   console.log("API remaining:", apiRemaining);
@@ -82,7 +83,7 @@ function Results() {
             <i>{allMinusSeen} titles found</i>
           </div>*/}
 
-          <button className="refresh-btn" onClick={fetchResults}>
+          <button className="refresh-btn" onClick={shuffleFromPool}>
             <ShuffleIcon fontSize="large" />
           </button>
         </>

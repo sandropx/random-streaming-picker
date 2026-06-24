@@ -1,7 +1,9 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
+
 function useResults(filters, navigate) {
   const [results, setResults] = useState([]);
+  const [titlePool, setTitlePool] = useState([]);
   const [loading, setLoading] = useState(true);
   const [emptyReason, setEmptyReason] = useState(null);
   const [totalTitles, setTotalTitles] = useState(0);
@@ -18,6 +20,16 @@ function useResults(filters, navigate) {
       `&types=${types}` +
       `&regions=CH`
     );
+  }
+
+  async function fetchMovieDetails(movieId) {
+    const response = await fetch(`/api/details?id=${movieId}`);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch movie details");
+    }
+
+    return await response.json();
   }
 
   async function fetchResults() {
@@ -40,8 +52,6 @@ function useResults(filters, navigate) {
       return;
     }
 
-    setLoading(true);
-    setEmptyReason(null);
     const hasPlatforms = filters.platforms.length > 0;
     const hasCategories = filters.categories.length > 0;
     const hasPreferences = filters.preferences.length > 0;
@@ -65,14 +75,23 @@ function useResults(filters, navigate) {
       navigate("/");
       return;
     }
+
     setLoading(true);
+    setEmptyReason(null);
 
     try {
       const response = await fetch(buildUrl());
 
+      if (!response.ok) {
+        const text = await response.text();
+        console.error("Watchmode error:", response.status, text);
+        throw new Error("Watchmode request failed");
+      }
+
       const quota = Number(response.headers.get("X-Account-Quota"));
       const used = Number(response.headers.get("X-Account-Quota-Used"));
       const remaining = quota - used;
+
       setApiRemaining(remaining);
       localStorage.setItem("watchmodeRemaining", remaining);
 
@@ -83,41 +102,54 @@ function useResults(filters, navigate) {
       if (!data.titles || data.titles.length === 0) {
         setEmptyReason("filters");
         setResults([]);
+        setTitlePool([]);
         return;
       }
 
       const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
 
-      const randomResults = data.titles
+      const availableTitles = data.titles
         .filter((movie) => !seenTitles.includes(movie.id))
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 3);
+        .sort(() => Math.random() - 0.5);
 
-      if (randomResults.length === 0) {
+      if (availableTitles.length === 0) {
         setEmptyReason("history");
         setResults([]);
+        setTitlePool([]);
         return;
       }
 
-      const detailedResults = await Promise.all(
-        randomResults.map(async (movie) => {
-          const response = await fetch(`/api/details?id=${movie.id}`);
+      const firstResults = availableTitles.slice(0, 3);
+      const pool = availableTitles.slice(3, 50);
 
-          return await response.json();
-        }),
+      const detailedResults = await Promise.all(
+        firstResults.map((movie) => fetchMovieDetails(movie.id)),
       );
-      setEmptyReason(null);
+
       setResults(detailedResults);
+      setTitlePool(pool);
+      setEmptyReason(null);
     } catch (error) {
       console.error(error);
+      setResults([]);
     } finally {
       setLoading(false);
     }
   }
 
+  async function getReplacementMovie() {
+    if (titlePool.length === 0) {
+      return null;
+    }
+
+    const nextMovie = titlePool[0];
+    setTitlePool((prev) => prev.slice(1));
+
+    return await fetchMovieDetails(nextMovie.id);
+  }
+
   async function handleSeen(id) {
     const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
-
     localStorage.setItem("seenTitles", JSON.stringify([...seenTitles, id]));
 
     const replacementMovie = await getReplacementMovie();
@@ -141,29 +173,30 @@ function useResults(filters, navigate) {
     );
   }
 
-  async function getReplacementMovie() {
-    const currentIds = results.map((movie) => movie.id);
-
-    const response = await fetch(buildUrl());
-    const data = await response.json();
-
-    const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
-
-    const availableTitles = data.titles.filter(
-      (movie) =>
-        !seenTitles.includes(movie.id) && !currentIds.includes(movie.id),
-    );
-
-    if (availableTitles.length === 0) {
-      return null;
+  async function shuffleFromPool() {
+    if (titlePool.length < 3) {
+      await fetchResults();
+      return;
     }
 
-    const randomMovie =
-      availableTitles[Math.floor(Math.random() * availableTitles.length)];
+    setLoading(true);
 
-    const detailsResponse = await fetch(`/api/details?id=${randomMovie.id}`);
+    try {
+      const nextResults = titlePool.slice(0, 3);
+      const newPool = titlePool.slice(3);
 
-    return await detailsResponse.json();
+      const detailedResults = await Promise.all(
+        nextResults.map((movie) => fetchMovieDetails(movie.id)),
+      );
+
+      setResults(detailedResults);
+      setTitlePool(newPool);
+      setEmptyReason(null);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
@@ -178,6 +211,7 @@ function useResults(filters, navigate) {
     apiRemaining,
     fetchResults,
     handleSeen,
+    shuffleFromPool,
   };
 }
 
