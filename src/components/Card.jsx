@@ -16,7 +16,7 @@ function Card({ result, onSeen }) {
     const titleLines = Math.round(titleRef.current.scrollHeight / lineHeight);
 
     const clampMap = {
-      1: 8,
+      1: 7,
       2: 6,
       3: 4,
       4: 2,
