@@ -114,75 +114,72 @@ function useResults(filters, navigate) {
     } finally {
       setLoading(false);
     }
+  }
 
-    async function handleSeen(id) {
-      const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
+  async function handleSeen(id) {
+    const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
 
-      localStorage.setItem("seenTitles", JSON.stringify([...seenTitles, id]));
+    localStorage.setItem("seenTitles", JSON.stringify([...seenTitles, id]));
 
-      const replacementMovie = await getReplacementMovie();
+    const replacementMovie = await getReplacementMovie();
 
-      if (!replacementMovie) {
-        setResults((prev) => {
-          const newResults = prev.filter((movie) => movie.id !== id);
+    if (!replacementMovie) {
+      setResults((prev) => {
+        const newResults = prev.filter((movie) => movie.id !== id);
 
-          if (newResults.length === 0) {
-            setEmptyReason("history");
-          }
+        if (newResults.length === 0) {
+          setEmptyReason("history");
+        }
 
-          return newResults;
-        });
+        return newResults;
+      });
 
-        return;
-      }
-
-      setResults((prev) =>
-        prev.map((movie) => (movie.id === id ? replacementMovie : movie)),
-      );
+      return;
     }
 
-    async function getReplacementMovie() {
-      const currentIds = results.map((movie) => movie.id);
+    setResults((prev) =>
+      prev.map((movie) => (movie.id === id ? replacementMovie : movie)),
+    );
+  }
 
-      const response = await fetch(buildUrl());
+  async function getReplacementMovie() {
+    const currentIds = results.map((movie) => movie.id);
 
-      const data = await response.json();
-
-      const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
-
-      const availableTitles = data.titles.filter(
-        (movie) =>
-          !seenTitles.includes(movie.id) && !currentIds.includes(movie.id),
-      );
-
-      if (availableTitles.length === 0) {
-        return null;
-      }
-
-      const randomMovie =
-        availableTitles[Math.floor(Math.random() * availableTitles.length)];
-
-      const detailsResponse = await fetch(`/api/details?id=${movie.id}`);
-
-      return await detailsResponse.json();
-    }
+    const response = await fetch(buildUrl());
+    const data = await response.json();
 
     const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
-    const logSeen = seenTitles.length;
-    const logFoundAll = totalTitles;
 
-    const allMinusSeen = logFoundAll - logSeen;
+    const availableTitles = data.titles.filter(
+      (movie) =>
+        !seenTitles.includes(movie.id) && !currentIds.includes(movie.id),
+    );
 
-    return {
-      results,
-      loading,
-      emptyReason,
-      totalTitles,
-      allMinusSeen,
-      apiRemaining,
-      fetchResults,
-      handleSeen,
-    };
+    if (availableTitles.length === 0) {
+      return null;
+    }
+
+    const randomMovie =
+      availableTitles[Math.floor(Math.random() * availableTitles.length)];
+
+    const detailsResponse = await fetch(`/api/details?id=${randomMovie.id}`);
+
+    return await detailsResponse.json();
   }
+
+  const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
+  const allMinusSeen = totalTitles - seenTitles.length;
+
+  return {
+    results,
+    loading,
+    emptyReason,
+    totalTitles,
+    allMinusSeen,
+    apiRemaining,
+    fetchResults,
+    handleSeen,
+  };
 }
+
 export default useResults;
