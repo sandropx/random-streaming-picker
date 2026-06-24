@@ -1,7 +1,9 @@
 import { useFilters } from "../context/FilterContext";
+
 import genres from "../data/genres";
 import UseNavigation from "../hooks/UseNavigation";
-import PaginationDots from "../components/PaginationDots";
+
+import Nav from "../components/Nav";
 
 function Category() {
   const { handlers } = UseNavigation();
@@ -40,7 +42,7 @@ function Category() {
               </label>
             ))}
           </div>
-          <PaginationDots />
+          <Nav />
         </div>
       </div>
     </>

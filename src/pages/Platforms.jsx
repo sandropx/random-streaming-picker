@@ -1,7 +1,9 @@
 import { useFilters } from "../context/FilterContext";
+
 import sources from "../data/sources";
+
+import Nav from "../components/Nav";
 import UseNavigation from "../hooks/UseNavigation";
-import PaginationDots from "../components/PaginationDots";
 
 function Platforms() {
   const { handlers } = UseNavigation();
@@ -50,7 +52,7 @@ function Platforms() {
               </label>
             ))}
           </div>
-          <PaginationDots />
+          <Nav />
         </div>
       </div>
     </>

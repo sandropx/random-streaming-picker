@@ -1,7 +1,8 @@
 import { useFilters } from "../context/FilterContext";
 
-import PaginationDots from "../components/PaginationDots";
 import UseNavigation from "../hooks/UseNavigation";
+
+import Nav from "../components/Nav";
 
 function Preference() {
   const { handlers } = UseNavigation();
@@ -45,7 +46,7 @@ function Preference() {
               </label>
             ))}
           </div>
-          <PaginationDots />
+          <Nav />
         </div>
       </div>
     </>

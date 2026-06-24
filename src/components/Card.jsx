@@ -51,6 +51,11 @@ function Card({ result, onSeen }) {
     ...result.genre_names.filter((genre) => !selectedGenres.includes(genre)),
   ].slice(0, 3);
 
+  const matchingSource = filters.platforms
+    .map((id) => result.sources?.find((source) => source.source_id === id))
+    .find(Boolean);
+
+  console.log(result.sources);
   return (
     <>
       <div className="card">
@@ -78,7 +83,7 @@ function Card({ result, onSeen }) {
           <p className="plot-overview">{result.plot_overview}</p>
           <div className="tags">
             <span className="genres">{displayGenres.join(" • ")}</span>
-            <span className="platform">{result.sources?.[0]?.name}</span>
+            <span className="platform">{matchingSource?.name}</span>
           </div>
         </div>
       </div>

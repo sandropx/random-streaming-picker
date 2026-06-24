@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router";
 
 import Swal from "sweetalert2";
 import UseNavigation from "../hooks/UseNavigation";
-import PaginationDots from "../components/PaginationDots";
+import Nav from "../components/Nav";
 
 function Search() {
   const { handlers } = UseNavigation();
@@ -42,14 +42,16 @@ function Search() {
 
   return (
     <>
-      <div {...handlers} className="m-0 search-page">
-        <button
-          onClick={handleClick}
-          className={`search-button ${isDisabled ? "disabled" : ""}`}
-        >
-          Search
-        </button>
-        <PaginationDots />
+      <div {...handlers} className="content">
+        <div className="box">
+          <button
+            onClick={handleClick}
+            className={`search-button ${isDisabled ? "disabled" : ""}`}
+          >
+            Search
+          </button>
+        </div>
+        <Nav />
       </div>
     </>
   );
