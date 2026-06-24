@@ -55,9 +55,9 @@ function Results() {
         <Swiper
           modules={[Pagination, EffectCards, Scrollbar]}
           pagination={{
-            clickable: true, // cliquer sur un bullet pour naviguer
-            type: "bullets", // "bullets" | "fraction" | "progressbar"
-            dynamicBullets: true, // les bullets s'agrandissent au centre
+            clickable: false,
+            type: "bullets",
+            dynamicBullets: false,
           }}
           scrollbar={{ draggable: false }}
           effect="cards"
