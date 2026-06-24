@@ -114,7 +114,7 @@ function useResults(filters, navigate) {
     } finally {
       setLoading(false);
     }
-  }
+  
 
   async function handleSeen(id) {
     const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
