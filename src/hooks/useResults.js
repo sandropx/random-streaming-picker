@@ -21,10 +21,10 @@ function useResults(filters, navigate) {
     );
   }
 
-  /*async function fetchResults() {
+  async function fetchResults() {
     const remaining = Number(localStorage.getItem("watchmodeRemaining"));
 
-    if (remaining && remaining <= 25) {
+    if (remaining && remaining <= 0) {
       await Swal.fire({
         title: "API limit reached",
         text: "The service has reached its monthly quota. Please contact developer.",
@@ -39,7 +39,7 @@ function useResults(filters, navigate) {
       });
       navigate("/");
       return;
-    }*/
+    }
 
     setLoading(true);
     setEmptyReason(null);
@@ -114,76 +114,75 @@ function useResults(filters, navigate) {
     } finally {
       setLoading(false);
     }
-  
 
-  async function handleSeen(id) {
-    const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
+    async function handleSeen(id) {
+      const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
 
-    localStorage.setItem("seenTitles", JSON.stringify([...seenTitles, id]));
+      localStorage.setItem("seenTitles", JSON.stringify([...seenTitles, id]));
 
-    const replacementMovie = await getReplacementMovie();
+      const replacementMovie = await getReplacementMovie();
 
-    if (!replacementMovie) {
-      setResults((prev) => {
-        const newResults = prev.filter((movie) => movie.id !== id);
+      if (!replacementMovie) {
+        setResults((prev) => {
+          const newResults = prev.filter((movie) => movie.id !== id);
 
-        if (newResults.length === 0) {
-          setEmptyReason("history");
-        }
+          if (newResults.length === 0) {
+            setEmptyReason("history");
+          }
 
-        return newResults;
-      });
+          return newResults;
+        });
 
-      return;
+        return;
+      }
+
+      setResults((prev) =>
+        prev.map((movie) => (movie.id === id ? replacementMovie : movie)),
+      );
     }
 
-    setResults((prev) =>
-      prev.map((movie) => (movie.id === id ? replacementMovie : movie)),
-    );
-  }
+    async function getReplacementMovie() {
+      const currentIds = results.map((movie) => movie.id);
 
-  async function getReplacementMovie() {
-    const currentIds = results.map((movie) => movie.id);
+      const response = await fetch(buildUrl());
 
-    const response = await fetch(buildUrl());
+      const data = await response.json();
 
-    const data = await response.json();
+      const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
 
-    const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
+      const availableTitles = data.titles.filter(
+        (movie) =>
+          !seenTitles.includes(movie.id) && !currentIds.includes(movie.id),
+      );
 
-    const availableTitles = data.titles.filter(
-      (movie) =>
-        !seenTitles.includes(movie.id) && !currentIds.includes(movie.id),
-    );
+      if (availableTitles.length === 0) {
+        return null;
+      }
 
-    if (availableTitles.length === 0) {
-      return null;
+      const randomMovie =
+        availableTitles[Math.floor(Math.random() * availableTitles.length)];
+
+      const detailsResponse = await fetch(`/api/details?id=${movie.id}`);
+
+      return await detailsResponse.json();
     }
 
-    const randomMovie =
-      availableTitles[Math.floor(Math.random() * availableTitles.length)];
+    const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
+    const logSeen = seenTitles.length;
+    const logFoundAll = totalTitles;
 
-    const detailsResponse = await fetch(`/api/details?id=${movie.id}`);
+    const allMinusSeen = logFoundAll - logSeen;
 
-    return await detailsResponse.json();
+    return {
+      results,
+      loading,
+      emptyReason,
+      totalTitles,
+      allMinusSeen,
+      apiRemaining,
+      fetchResults,
+      handleSeen,
+    };
   }
-
-  const seenTitles = JSON.parse(localStorage.getItem("seenTitles")) || [];
-  const logSeen = seenTitles.length;
-  const logFoundAll = totalTitles;
-
-  const allMinusSeen = logFoundAll - logSeen;
-
-  return {
-    results,
-    loading,
-    emptyReason,
-    totalTitles,
-    allMinusSeen,
-    apiRemaining,
-    fetchResults,
-    handleSeen,
-  };
 }
-
 export default useResults;
