@@ -1,8 +1,6 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 function useResults(filters, navigate) {
-  const apiKey = import.meta.env.VITE_WATCHMODE_API_KEY;
-
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [emptyReason, setEmptyReason] = useState(null);
@@ -15,7 +13,7 @@ function useResults(filters, navigate) {
     const types = filters.preferences.join(",");
 
     return (
-      `https://api.watchmode.com/v1/list-titles/?apiKey=${apiKey}` +
+      `/api/watchmode` +
       `&source_ids=${sourceIds}` +
       `&genres=${genres}` +
       `&types=${types}` +
@@ -104,9 +102,7 @@ function useResults(filters, navigate) {
 
       const detailedResults = await Promise.all(
         randomResults.map(async (movie) => {
-          const response = await fetch(
-            `https://api.watchmode.com/v1/title/${movie.id}/details/?apiKey=${apiKey}&append_to_response=seasons,sources`,
-          );
+          const response = await fetch(`/api/details?id=${movie.id}`);
 
           return await response.json();
         }),
@@ -167,9 +163,7 @@ function useResults(filters, navigate) {
     const randomMovie =
       availableTitles[Math.floor(Math.random() * availableTitles.length)];
 
-    const detailsResponse = await fetch(
-      `https://api.watchmode.com/v1/title/${randomMovie.id}/details/?apiKey=${apiKey}&append_to_response=seasons,sources`,
-    );
+    const detailsResponse = await fetch(`/api/details?id=${movie.id}`);
 
     return await detailsResponse.json();
   }
