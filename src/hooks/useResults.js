@@ -88,12 +88,14 @@ function useResults(filters, navigate) {
         throw new Error("Watchmode request failed");
       }
 
-      const quota = Number(response.headers.get("X-Account-Quota"));
-      const used = Number(response.headers.get("X-Account-Quota-Used"));
-      const remaining = quota - used;
+      const remaining = Number(
+        response.headers.get("X-Account-Quota-Remaining"),
+      );
 
-      setApiRemaining(remaining);
-      localStorage.setItem("watchmodeRemaining", remaining);
+      if (!Number.isNaN(remaining)) {
+        setApiRemaining(remaining);
+        localStorage.setItem("watchmodeRemaining", remaining);
+      }
 
       const data = await response.json();
 

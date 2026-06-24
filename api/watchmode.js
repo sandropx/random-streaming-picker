@@ -15,6 +15,15 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(url);
+
+    const quota = Number(response.headers.get("X-Account-Quota"));
+    const used = Number(response.headers.get("X-Account-Quota-Used"));
+    const remaining = quota - used;
+
+    res.setHeader("X-Account-Quota", quota);
+    res.setHeader("X-Account-Quota-Used", used);
+    res.setHeader("X-Account-Quota-Remaining", remaining);
+
     const data = await response.json();
 
     res.status(200).json(data);
