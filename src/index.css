@@ -42,6 +42,35 @@ hr {
 }
 
 /* ============================================================
+   HOME
+   ============================================================ */
+.home-logo {
+  display: flex;
+  justify-content: end;
+}
+.logo-icon-only {
+  height: 100%;
+  width: 35px;
+}
+.home-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 50px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+  font-family: "Google Sans Flex", sans-serif;
+  font-size: 1.2rem;
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================================
    TYPOGRAPHIE
    ============================================================ */
 
@@ -670,14 +699,54 @@ input[type="checkbox"]:checked {
 }
 
 @media (min-width: 768px) {
-  .content-box {
+  body {
     display: flex;
     justify-content: center;
+    color: white;
+    background-color: var(--bg-color);
+    padding: 3rem;
+    height: 100dvh;
   }
-
+  .desktop-only {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    column-gap: 5rem;
+  }
+  .desktop-left {
+  }
+  .img-mobile-mockup {
+    height: 40dvh;
+  }
+  .desktop-right {
+  }
+  .desktop-right h1 {
+    line-height: 3.5rem;
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+  }
+  .desktop-right p {
+    line-height: 1.5rem;
+    font-size: 1rem;
+    opacity: 0.7;
+  }
+  .colored {
+    background: -webkit-linear-gradient(
+      358deg,
+      rgba(1, 255, 229, 1) 0%,
+      rgba(1, 181, 179, 1) 33%,
+      rgba(21, 192, 133, 1) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+/*
   .card {
     flex-direction: row;
     margin: 35px;
+    width: 90dvw;
   }
 
   .poster {
@@ -762,6 +831,13 @@ input[type="checkbox"]:checked {
 }
 
 @media (min-width: 1200px) {
+  .content {
+    display: flex;
+    justify-content: center;
+  }
+  .content-box {
+    width: 70dvw;
+  }
   .content-result {
     width: min(95vw, 1200px);
     height: 100dvh;
@@ -789,6 +865,7 @@ input[type="checkbox"]:checked {
     height: 30%;
   }
 }
+*/
 
 /* ============================================================
    MEDIA QUERIES HEIGHT

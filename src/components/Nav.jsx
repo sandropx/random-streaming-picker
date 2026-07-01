@@ -6,7 +6,7 @@ function Nav() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const pages = ["/", "/preference", "/category", "/search"];
+  const pages = ["/", "/platforms", "/preference", "/category", "/search"];
 
   const currentIndex = pages.indexOf(location.pathname);
 
