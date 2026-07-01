@@ -1,4 +1,5 @@
 import { ReactQRCode } from "@lglab/react-qr-code";
+
 function DesktopMessage() {
   return (
     <div className="desktop-only">

@@ -1,6 +1,10 @@
 import { useNavigate, useLocation } from "react-router";
 
 import EastIcon from "@mui/icons-material/East";
+
+import randomLogo from "../assets/random-logo-icon-only.png";
+import randomHero from "../assets/result.png";
+
 function Home() {
   const navigate = useNavigate();
 
@@ -14,11 +18,7 @@ function Home() {
         <div className="home-content">
           <div class="home-logo">
             <h2>Can't decide?</h2>
-            <img
-              alt="Logo Random"
-              class="logo-icon-only"
-              src="src/assets/random-logo-icon-only.png"
-            />
+            <img alt="Logo Random" class="logo-icon-only" src={randomLogo} />
           </div>
           <h1>We'll pick for you</h1>
           <p>
@@ -26,7 +26,7 @@ function Home() {
             favorite platforms and preferences.
           </p>
           <img
-            src="src/assets/result.png"
+            src={randomHero}
             alt="Exemple of result"
             className="result-exemple"
           />
