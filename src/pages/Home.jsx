@@ -25,7 +25,11 @@ function Home() {
             Instead of hundreds of results, get 3 random picks tailored to your
             favorite platforms and preferences.
           </p>
-          <img src="src/assets/result-exemple.png" alt="" />
+          <img
+            src="src/assets/result.png"
+            alt="Exemple of result"
+            className="result-exemple"
+          />
           <button className="home-button" onClick={handleClick}>
             Let's go <EastIcon className="home-button-icon" />
           </button>
