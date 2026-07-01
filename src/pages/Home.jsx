@@ -11,23 +11,23 @@ function Home() {
   return (
     <>
       <div className="content-box">
-        <div className="content">
-          <div className="home-logo">
+        <div className="home-content">
+          <div class="home-logo">
+            <h2>Can't decide?</h2>
             <img
-              src="src/assets/random-logo-icon-only.png"
               alt="Logo Random"
-              className="logo-icon-only"
+              class="logo-icon-only"
+              src="src/assets/random-logo-icon-only.png"
             />
           </div>
-          <h2>Can't decide?</h2>
           <h1>We'll pick for you</h1>
           <p>
             Instead of hundreds of results, get 3 random picks tailored to your
             favorite platforms and preferences.
           </p>
-          <img src="" alt="" />
+          <img src="src/assets/result-exemple.png" alt="" />
           <button className="home-button" onClick={handleClick}>
-            Let's go <EastIcon />
+            Let's go <EastIcon className="home-button-icon" />
           </button>
         </div>
       </div>
