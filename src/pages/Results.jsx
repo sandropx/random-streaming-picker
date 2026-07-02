@@ -60,7 +60,6 @@ function Results() {
             type: "bullets",
             dynamicBullets: false,
           }}
-          scrollbar={{ draggable: false }}
           effect="cards"
           speed={400}
           cardsEffect={{
