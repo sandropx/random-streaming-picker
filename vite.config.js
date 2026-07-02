@@ -17,8 +17,8 @@ export default defineConfig({
         name: "Random Streaming Picker",
         short_name: "Random",
         description: "Find your next movie or TV show by randoming 3 pick",
-        theme_color: "#0f0f0f",
-        background_color: "#010101",
+        theme_color: "#121212",
+        background_color: "#121212",
         display: "standalone",
         icons: [
           {

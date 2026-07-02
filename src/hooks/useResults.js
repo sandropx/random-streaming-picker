@@ -72,7 +72,7 @@ function useResults(filters, navigate) {
         },
       });
 
-      navigate("/");
+      navigate("/platforms");
       return;
     }
 

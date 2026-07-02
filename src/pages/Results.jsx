@@ -16,7 +16,6 @@ import EmptyState from "../components/EmptyState";
 
 import "swiper/css";
 import "swiper/css/pagination";
-import "swiper/css/scrollbar";
 
 function Results() {
   const { filters } = useFilters();
@@ -46,7 +45,7 @@ function Results() {
       ) : emptyReason ? (
         <EmptyState
           type={emptyReason}
-          onBack={() => navigate("/")}
+          onBack={() => navigate("/platforms")}
           onReset={() => {
             localStorage.removeItem("seenTitles");
             fetchResults();
