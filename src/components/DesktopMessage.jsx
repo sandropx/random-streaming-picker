@@ -1,12 +1,14 @@
 import { ReactQRCode } from "@lglab/react-qr-code";
 
+import mockupHome from "../assets/mockup.png";
+
 function DesktopMessage() {
   return (
     <div className="desktop-only">
       <div className="desktop-left">
         <img
           className="img-mobile-mockup"
-          src="./assets/modern-black-smartphone-mockup-with-blank-screen-transparent-background_84443-26895.avif"
+          src={mockupHome}
           alt="Mobile App Mockup"
         />
       </div>
@@ -20,20 +22,24 @@ function DesktopMessage() {
           This app was designed for smartphones. <br />
           Resize your browser or scan the QR code below.
         </p>
-        <ReactQRCode
-          dataModulesSettings={{
-            color: "#ffffff",
-          }}
-          finderPatternOuterSettings={{
-            color: "#ffffff",
-          }}
-          finderPatternInnerSettings={{
-            color: "#ffffff",
-          }}
-          marginSize={2}
-          size={256}
-          value="https://app.maurinebasaia.ch"
-        />
+        <div className="qr-glass">
+          <div className="scan-me">Scan me</div>
+
+          <ReactQRCode
+            dataModulesSettings={{
+              color: "#ffffff",
+            }}
+            finderPatternOuterSettings={{
+              color: "#ffffff",
+            }}
+            finderPatternInnerSettings={{
+              color: "#ffffff",
+            }}
+            marginSize={2}
+            size={256}
+            value="https://app.maurinebasaia.ch"
+          />
+        </div>
       </div>
     </div>
   );
